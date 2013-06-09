@@ -309,6 +309,13 @@
        z (m-until p f y)]
       z)))
 
+(defmonadfn m-filter [f [x & xs]]
+  (if (nil? x)
+    (m-result [])    
+    (domonad [flag (f x)
+              ys (m-filter f xs)]
+             (if flag (cons x ys) ys))))
+
 (defmacro m-when
   "If test is logical true, return monadic value m-expr, else return
    (m-result nil)."

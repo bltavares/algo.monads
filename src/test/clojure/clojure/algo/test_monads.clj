@@ -12,7 +12,7 @@
   (:use [clojure.test :only (deftest is are run-tests)]
         [clojure.algo.monads
          :only (with-monad domonad m-lift m-seq m-chain writer-m write
-                sequence-m maybe-m state-m maybe-t sequence-t)]))
+                sequence-m maybe-m state-m maybe-t sequence-t m-filter)]))
 
 
 (deftest domonad-if-then
@@ -169,4 +169,9 @@
                      (+ x y))]
              (f :state)))
         (list [(list 11 21 12 22) :state]))))
+
+(deftest monadic-filter
+  (with-monad sequence-m
+    (is (= [[1,2],[1],[2],[]]
+           (m-filter (fn [x] [true,false]) [1,2])))))
 
